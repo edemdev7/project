@@ -11,7 +11,12 @@ export default function ProfileScreen() {
     if (!isAuthenticated) {
       router.replace('/auth/login');
     } else {
-      refreshUserProfile();
+      // try {
+      //   refreshUserProfile();
+      // } catch (err) {
+      //   console.error('Error refreshing profile:', err);
+      // }
+      console.log('User profile refreshe disabled');
     }
   }, [isAuthenticated]);
 
@@ -87,12 +92,12 @@ export default function ProfileScreen() {
         >
           <Text style={styles.menuItemText}>Vérification téléphone</Text>
           <View style={styles.menuItemRight}>
-            <Text style={[
-              styles.statusText, 
-              user.phone_verified === 'true' ? styles.statusVerified : styles.statusPending
-            ]}>
-              {user.phone_verified === 'true' ? 'Vérifié' : 'Non vérifié'}
-            </Text>
+          <Text style={[
+            styles.statusText, 
+            !!user.phone_verified ? styles.statusVerified : styles.statusPending
+          ]}>
+            {!!user.phone_verified ? 'Vérifié' : 'Non vérifié'}
+          </Text>
             <ChevronRight size={20} color="#9CA3AF" />
           </View>
         </TouchableOpacity>
@@ -104,12 +109,12 @@ export default function ProfileScreen() {
           >
             <Text style={styles.menuItemText}>Documents d'identité</Text>
             <View style={styles.menuItemRight}>
-              <Text style={[
-                styles.statusText, 
-                user.documents_uploaded === 'true' ? styles.statusVerified : styles.statusPending
-              ]}>
-                {user.documents_uploaded === 'true' ? 'Envoyés' : 'Non envoyés'}
-              </Text>
+            <Text style={[
+              styles.statusText, 
+              !!user.documents_uploaded ? styles.statusVerified : styles.statusPending
+            ]}>
+              {!!user.documents_uploaded ? 'Envoyés' : 'Non envoyés'}
+            </Text>
               <ChevronRight size={20} color="#9CA3AF" />
             </View>
           </TouchableOpacity>
