@@ -16,7 +16,7 @@ import { router } from 'expo-router';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useUserContext } from '@/context/UserContext';
 import { submitWasteDeclaration } from '@/services/api';
-import { WasteData } from '@/types';
+import { User, WasteData } from '@/types';
 
 export default function WasteDeclarationScreen() {
   const { user, isAuthenticated } = useUserContext();
@@ -43,7 +43,7 @@ export default function WasteDeclarationScreen() {
       Alert.alert(
         "Compte non vérifié",
         "Vous devez compléter toutes les étapes de vérification pour accéder à cette fonctionnalité.",
-        [{ text: "OK", onPress: () => router.replace('/(tabs)/') }]
+        [{ text: "OK", onPress: () => router.replace('/(tabs)') }]
       );
     }
   }, [isAuthenticated, user]);
@@ -240,14 +240,14 @@ export default function WasteDeclarationScreen() {
   );
 }
 
-function isUserVerified(user) {
+function isUserVerified(user: User | null) {
   if (!user) return false;
   
-  if (user.phone_verified !== 'true') return false;
+  if (!user.phone_verified) return false;
   
-  if (user.type === 'particulier' && user.documents_uploaded !== 'true') return false;
+  if (user.type === 'particulier' && !user.documents_uploaded) return false;
   
-  if (['collecteur', 'recycleur'].includes(user.type) && user.verification_status !== 'validated') return false;
+  if (['collecteur', 'recycleur'].includes(user.type) && user.verification_status !== 'validé') return false;
   
   return true;
 }

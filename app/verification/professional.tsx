@@ -44,7 +44,7 @@ export default function ProfessionalFormScreen() {
       Alert.alert(
         'Non applicable',
         'Cette vérification est uniquement pour les comptes de type "collecteur" ou "recycleur".',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)/') }]
+        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
       );
     }
   }, [isAuthenticated, user]);
@@ -121,7 +121,7 @@ export default function ProfessionalFormScreen() {
       Alert.alert(
         'Succès', 
         'Votre profil professionnel a été soumis avec succès et est en cours de vérification.',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)/') }]
+        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
       );
     } catch (error) {
       console.error('Error submitting professional verification:', error);
@@ -132,7 +132,7 @@ export default function ProfessionalFormScreen() {
   };
 
   // If already verified/pending, show status message
-  if (user?.verification_status === 'validated' || user?.verification_status === 'pending') {
+  if (user?.verification_status === 'validated' || user?.verification_status === 'en attente') {
     return (
       <View style={styles.container}>
         <View style={styles.statusContainer}>
@@ -157,7 +157,7 @@ export default function ProfessionalFormScreen() {
           
           <TouchableOpacity
             style={styles.button}
-            onPress={() => router.replace('/(tabs)/')}
+            onPress={() => router.replace('/(tabs)')}
           >
             <Text style={styles.buttonText}>Retour à l'accueil</Text>
           </TouchableOpacity>

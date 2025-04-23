@@ -129,10 +129,10 @@ export default function ProfileScreen() {
             <View style={styles.menuItemRight}>
               <Text style={[
                 styles.statusText, 
-                user.verification_status === 'validated' ? styles.statusVerified : 
+                user.verification_status === 'validé' ? styles.statusVerified : 
                 user.verification_status === 'rejected' ? styles.statusRejected : styles.statusPending
               ]}>
-                {user.verification_status === 'validated' ? 'Validé' : 
+                {user.verification_status === 'validé' ? 'Validé' : 
                  user.verification_status === 'rejected' ? 'Rejeté' : 'En attente'}
               </Text>
               <ChevronRight size={20} color="#9CA3AF" />

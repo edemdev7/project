@@ -37,7 +37,7 @@ export default function DocumentUploadScreen() {
       Alert.alert(
         'Non applicable',
         'Cette vérification est uniquement pour les comptes de type "particulier".',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)/') }]
+        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
       );
     }
   }, [isAuthenticated, user]);
@@ -113,7 +113,7 @@ export default function DocumentUploadScreen() {
       Alert.alert(
         'Succès', 
         'Vos documents ont été soumis avec succès et sont en cours de vérification.',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)/') }]
+        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
       );
     } catch (error) {
       console.error('Error uploading documents:', error);
@@ -124,7 +124,7 @@ export default function DocumentUploadScreen() {
   };
 
   // If already uploaded, show success message
-  if (user?.documents_uploaded === 'true') {
+  if (user?.documents_uploaded) {
     return (
       <View style={styles.container}>
         <View style={styles.successContainer}>
@@ -135,7 +135,7 @@ export default function DocumentUploadScreen() {
           </Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => router.replace('/(tabs)/')}
+            onPress={() => router.replace('/(tabs)')}
           >
             <Text style={styles.buttonText}>Retour à l'accueil</Text>
           </TouchableOpacity>

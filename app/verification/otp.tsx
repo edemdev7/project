@@ -75,7 +75,7 @@ export default function OtpVerificationScreen() {
       Alert.alert(
         'Succès', 
         'Votre numéro de téléphone a été vérifié avec succès',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)/') }]
+        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
       );
     } catch (error) {
       console.error('Error verifying OTP:', error);
@@ -86,7 +86,7 @@ export default function OtpVerificationScreen() {
   };
 
   // If already verified, show success message
-  if (user?.phone_verified === 'true') {
+  if (user?.phone_verified) {
     return (
       <View style={styles.container}>
         <View style={styles.successContainer}>
@@ -96,7 +96,7 @@ export default function OtpVerificationScreen() {
           </Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => router.replace('/(tabs)/')}
+            onPress={() => router.replace('/(tabs)')}
           >
             <Text style={styles.buttonText}>Retour à l'accueil</Text>
           </TouchableOpacity>

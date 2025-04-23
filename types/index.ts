@@ -1,6 +1,6 @@
 export type UserType = 'particulier' | 'entreprise' | 'collecteur' | 'recycleur' | 'admin';
 
-export type VerificationStatus = 'pending' | 'validated' | 'rejected';
+export type VerificationStatus = 'en attente' | 'validated' | 'rejected';
 
 export interface User {
   id: number;

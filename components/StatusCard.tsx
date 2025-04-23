@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
+import { router, Href } from 'expo-router';
 import { Check, Clock, X, ChevronRight } from 'lucide-react-native';
 
 interface StatusCardProps {
   title: string;
   status: boolean;
   action?: 'verify' | 'upload' | 'complete';
-  route?: string;
+  route?: Href;
   isPending?: boolean;
   errorMessage?: string;
 }

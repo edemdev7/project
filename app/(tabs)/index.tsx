@@ -44,18 +44,18 @@ export default function HomeScreen() {
         {(user.type === 'collecteur' || user.type === 'recycleur') && (
           <StatusCard
             title="Profil professionnel"
-            status={user.verification_status === 'validated'}
-            action={user.verification_status !== 'validated' && user.verification_status !== 'pending' ? 'complete' : undefined}
+            status={user.verification_status === 'validé'}
+            action={user.verification_status !== 'validé' && user.verification_status !== 'en attente' ? 'complete' : undefined}
             route="/verification/professional"
-            isPending={user.verification_status === 'pending'}
+            isPending={user.verification_status === 'en attente'}
             errorMessage={user.rejected_reason}
           />
         )}
         
         <StatusCard
           title="Validation du compte"
-          status={user.verification_status === 'validated'}
-          isPending={user.verification_status === 'pending'}
+          status={user.verification_status === 'validé'}
+          isPending={user.verification_status === 'en attente'}
           errorMessage={user.rejected_reason}
         />
       </View>
@@ -102,7 +102,7 @@ export default function HomeScreen() {
 function isUserVerified(user: User) {
   if (!user.phone_verified) return false; 
   
-  if (user.type === 'particulier' && user.documents_uploaded !== 'true') return false;
+  if (user.type === 'particulier' && !user.documents_uploaded ) return false;
   
   if (['collecteur', 'recycleur'].includes(user.type) && user.verification_status !== 'validated') return false;
   
