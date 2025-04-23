@@ -113,21 +113,51 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
 
-
   const logout = async () => {
     try {
+      console.log("Starting logout process");
       setIsLoading(true);
-      await storage.removeItem('auth_token'); // Utiliser storage.removeItem
-      setUser(null);
+      
+      // Suppression du token directement dans le localStorage pour le web
+      if (Platform.OS === 'web') {
+        console.log("Using direct localStorage removal for web");
+        localStorage.removeItem('auth_token');
+      } else {
+        await AsyncStorage.removeItem('auth_token');
+      }
+      
+      // Mise à jour immédiate de l'état
+      console.log("Setting authenticated state to false");
       setIsAuthenticated(false);
+      setUser(null);
+      
+      // Force logout à travers le navigateur
+      if (Platform.OS === 'web') {
+        // Vide également sessionStorage au cas où
+        sessionStorage.clear();
+        
+        // Force un refresh de l'application pour nettoyer l'état
+        console.log("Forcing app refresh after logout");
+        setTimeout(() => {
+          window.location.href = '/auth/login';
+        }, 100);
+      }
     } catch (err) {
-      console.error('Logout error:', err);
-      setError('Failed to logout');
+      console.error("Logout error:", err);
+      
+      // En cas d'erreur, force tout de même la déconnexion
+      setIsAuthenticated(false);
+      setUser(null);
+      
+      if (Platform.OS === 'web') {
+        localStorage.removeItem('auth_token');
+        sessionStorage.clear();
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   const refreshUserProfile = async () => {
     if (!isAuthenticated) return; 
     try {

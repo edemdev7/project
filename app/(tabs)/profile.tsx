@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, Platform } from 'react-native';
 import { router } from 'expo-router';
 import { useUserContext } from '@/context/UserContext';
 import { User, MapPin, Award, LogOut, ChevronRight } from 'lucide-react-native';
@@ -21,21 +21,61 @@ export default function ProfileScreen() {
   }, [isAuthenticated]);
 
   const handleLogout = () => {
-    Alert.alert(
-      "Déconnexion",
-      "Êtes-vous sûr de vouloir vous déconnecter ?",
-      [
-        {
-          text: "Annuler",
-          style: "cancel"
-        },
-        { 
-          text: "Déconnexion", 
-          onPress: () => logout(),
-          style: "destructive"
-        }
-      ]
-    );
+    console.log("Logout button pressed");
+    
+    // Version conditionnelle selon la plateforme
+    if (Platform.OS === 'web') {
+      // Sur le web, utiliser une confirmation standard du navigateur
+      if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
+        logoutAndRedirect();
+      }
+    } else {
+      // Sur mobile, utiliser Alert.alert
+      Alert.alert(
+        "Déconnexion",
+        "Êtes-vous sûr de vouloir vous déconnecter ?",
+        [
+          { text: "Annuler", style: "cancel" },
+          { 
+            text: "Déconnexion", 
+            onPress: logoutAndRedirect,
+            style: "destructive"
+          }
+        ]
+      );
+    }
+  };
+  // Fonction séparée pour la logique de déconnexion
+  const logoutAndRedirect = async () => {
+    console.log("Confirming logout");
+    try {
+      // Force déconnexion sur le web
+      if (Platform.OS === 'web') {
+        localStorage.removeItem('auth_token');
+      }
+      
+      await logout();
+      console.log("Logout successful, redirecting");
+      
+      // Redirection selon la plateforme
+      if (Platform.OS === 'web') {
+        // Redirection dure pour le web
+        window.location.href = '/auth/login';
+      } else {
+        // Router pour mobile
+        router.replace('/auth/login');
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      
+      // Forcer la déconnexion même en cas d'erreur
+      if (Platform.OS === 'web') {
+        localStorage.removeItem('auth_token');
+        window.location.href = '/auth/login';
+      } else {
+        router.replace('/auth/login');
+      }
+    }
   };
 
   if (!user) {
