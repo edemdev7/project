@@ -4,6 +4,7 @@ import { Link, router } from 'expo-router';
 import { useUserContext } from '@/context/UserContext';
 import { StatusCard } from '@/components/StatusCard';
 import { WelcomeMessage } from '@/components/WelcomeMessage';
+import { User } from '@/types';
 
 export default function HomeScreen() {
   const { user, isAuthenticated } = useUserContext();
@@ -26,16 +27,16 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>État de votre compte</Text>
         <StatusCard
           title="Vérification téléphone"
-          status={user.phone_verified === 'true'}
-          action={user.phone_verified !== 'true' ? 'verify' : undefined}
+          status={!!user.phone_verified} 
+          action={!user.phone_verified ? 'verify' : undefined} 
           route="/verification/otp"
         />
         
         {user.type === 'particulier' && (
           <StatusCard
             title="Documents d'identité"
-            status={user.documents_uploaded === 'true'}
-            action={user.documents_uploaded !== 'true' ? 'upload' : undefined}
+            status={!!user.documents_uploaded}
+            action={!user.documents_uploaded ? 'upload' : undefined} 
             route="/verification/documents"
           />
         )}
@@ -47,6 +48,7 @@ export default function HomeScreen() {
             action={user.verification_status !== 'validated' && user.verification_status !== 'pending' ? 'complete' : undefined}
             route="/verification/professional"
             isPending={user.verification_status === 'pending'}
+            errorMessage={user.rejected_reason}
           />
         )}
         
@@ -97,8 +99,8 @@ export default function HomeScreen() {
   );
 }
 
-function isUserVerified(user) {
-  if (user.phone_verified !== 'true') return false;
+function isUserVerified(user: User) {
+  if (!user.phone_verified) return false; 
   
   if (user.type === 'particulier' && user.documents_uploaded !== 'true') return false;
   
