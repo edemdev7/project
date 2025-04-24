@@ -98,6 +98,7 @@ export default function ProfessionalFormScreen() {
       setLoading(true);
       
       const formData = new FormData();
+      formData.append('type', user?.type || '');
       
       // Add all text fields
       Object.entries(professionalData).forEach(([key, value]) => {
@@ -108,21 +109,41 @@ export default function ProfessionalFormScreen() {
         }
       });
       
-      // Add the document
+      // Gestion du fichier selon la plateforme
+    if (Platform.OS === 'web') {
+      console.log("Préparation du fichier pour le web...");
+      try {
+        // Sur le web, il faut récupérer le Blob à partir de l'URI
+        const response = await fetch(preuveImpotUri);
+        const blob = await response.blob();
+        formData.append('preuve_impot', blob, 'preuve_impot.jpg');
+      } catch (fileErr) {
+        console.error('Erreur lors de la préparation du fichier:', fileErr);
+        Alert.alert('Erreur', 'Impossible de préparer le fichier pour l\'envoi');
+        setLoading(false);
+        return;
+      }
+    } else {
+      // Pour les plateformes natives (iOS/Android)
       formData.append('preuve_impot', {
         name: 'preuve_impot.jpg',
         type: 'image/jpeg',
         uri: Platform.OS === 'ios' ? preuveImpotUri.replace('file://', '') : preuveImpotUri,
       } as any);
+    }
 
-      await submitProfessionalVerification(formData);
-      await refreshUserProfile();
-      
-      Alert.alert(
-        'Succès', 
-        'Votre profil professionnel a été soumis avec succès et est en cours de vérification.',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
-      );
+    // Afficher le contenu du FormData pour débogage
+    console.log("FormData préparé, envoi en cours...");
+    
+    await submitProfessionalVerification(formData);
+    await refreshUserProfile();
+    
+    Alert.alert(
+      'Succès', 
+      'Votre profil professionnel a été soumis avec succès et est en cours de vérification.',
+      [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
+    );
+
     } catch (error) {
       console.error('Error submitting professional verification:', error);
       Alert.alert('Erreur', 'Impossible de soumettre votre profil professionnel. Veuillez réessayer.');
@@ -132,11 +153,11 @@ export default function ProfessionalFormScreen() {
   };
 
   // If already verified/pending, show status message
-  if (user?.documents_uploaded) {
+if (user?.pro_verification_submitted) {
     return (
       <View style={styles.container}>
         <View style={styles.statusContainer}>
-          {user.verification_status === 'validé' ? (
+          {user.pro_verification_status === 'validé' ? (
             <Check size={60} color="#10B981" />
           ) : (
             <Info size={60} color="#F59E0B" />
@@ -144,13 +165,13 @@ export default function ProfessionalFormScreen() {
           
           <Text style={[
             styles.statusTitle,
-            user.verification_status === 'validé' ? styles.validatedText : styles.pendingText
+            user.pro_verification_status === 'validé' ? styles.validatedText : styles.pendingText
           ]}>
-            {user.verification_status === 'validé' ? 'Profil validé' : 'En attente de validation'}
+            {user.pro_verification_status === 'validé' ? 'Profil validé' : 'En attente de validation'}
           </Text>
           
           <Text style={styles.statusMessage}>
-            {user.verification_status === 'validé' 
+            {user.pro_verification_status === 'validé' 
               ? 'Votre profil professionnel a été vérifié et validé par notre équipe.'
               : 'Votre profil professionnel est en cours de vérification par notre équipe. Veuillez patienter.'}
           </Text>

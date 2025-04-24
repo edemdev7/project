@@ -14,6 +14,8 @@ export interface User {
   documents_uploaded: string;
   verification_status: string;
   rejected_reason?: string;
+  pro_verification_submitted:string,
+  pro_verification_status:string,
 }
 
 export interface AuthTokens {
