@@ -132,11 +132,11 @@ export default function ProfessionalFormScreen() {
   };
 
   // If already verified/pending, show status message
-  if (user?.verification_status === 'validated' || user?.verification_status === 'en attente') {
+  if (user?.documents_uploaded) {
     return (
       <View style={styles.container}>
         <View style={styles.statusContainer}>
-          {user.verification_status === 'validated' ? (
+          {user.verification_status === 'validé' ? (
             <Check size={60} color="#10B981" />
           ) : (
             <Info size={60} color="#F59E0B" />
@@ -144,13 +144,13 @@ export default function ProfessionalFormScreen() {
           
           <Text style={[
             styles.statusTitle,
-            user.verification_status === 'validated' ? styles.validatedText : styles.pendingText
+            user.verification_status === 'validé' ? styles.validatedText : styles.pendingText
           ]}>
-            {user.verification_status === 'validated' ? 'Profil validé' : 'En attente de validation'}
+            {user.verification_status === 'validé' ? 'Profil validé' : 'En attente de validation'}
           </Text>
           
           <Text style={styles.statusMessage}>
-            {user.verification_status === 'validated' 
+            {user.verification_status === 'validé' 
               ? 'Votre profil professionnel a été vérifié et validé par notre équipe.'
               : 'Votre profil professionnel est en cours de vérification par notre équipe. Veuillez patienter.'}
           </Text>

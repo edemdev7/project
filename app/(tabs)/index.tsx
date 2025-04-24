@@ -38,14 +38,16 @@ export default function HomeScreen() {
             status={!!user.documents_uploaded}
             action={!user.documents_uploaded ? 'upload' : undefined} 
             route="/verification/documents"
+            errorMessage={user.rejected_reason}
+            isPending={user.verification_status === 'en attente'}
           />
         )}
         
         {(user.type === 'collecteur' || user.type === 'recycleur') && (
           <StatusCard
             title="Profil professionnel"
-            status={user.verification_status === 'validé'}
-            action={user.verification_status !== 'validé' && user.verification_status !== 'en attente' ? 'complete' : undefined}
+            status={!!user.documents_uploaded}
+            action={!user.documents_uploaded ? 'upload' : undefined} 
             route="/verification/professional"
             isPending={user.verification_status === 'en attente'}
             errorMessage={user.rejected_reason}
@@ -104,7 +106,7 @@ function isUserVerified(user: User) {
   
   if (user.type === 'particulier' && !user.documents_uploaded ) return false;
   
-  if (['collecteur', 'recycleur'].includes(user.type) && user.verification_status !== 'validated') return false;
+  if (['collecteur', 'recycleur'].includes(user.type) && user.verification_status !== 'validé') return false;
   
   return true;
 }
