@@ -6,7 +6,7 @@ import { User, MapPin, Award, LogOut, ChevronRight } from 'lucide-react-native';
 
 export default function ProfileScreen() {
   const { user, logout, isAuthenticated, refreshUserProfile } = useUserContext();
-
+  
   useEffect(() => {
     if (!isAuthenticated) {
       router.replace('/auth/login');

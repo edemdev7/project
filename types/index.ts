@@ -16,6 +16,9 @@ export interface User {
   rejected_reason?: string;
   pro_verification_submitted:string,
   pro_verification_status:string,
+  latitude?: number;
+  longitude?: number;
+  availability?: 'available' | 'unavailable';
 }
 
 export interface AuthTokens {
