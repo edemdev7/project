@@ -18,15 +18,17 @@ export function WasteItem({ declaration }: WasteItemProps) {
     });
   };
   
-  const getCategoryLabel = (category: string) => {
-    const categories = {
+  type CategoryKey = 'plastique' | 'papier' | 'organique' | 'electronique' | 'autre';
+  
+  const getCategoryLabel = (category: CategoryKey | string) => {
+    const categories: Record<CategoryKey, string> = {
       plastique: 'Plastique',
       papier: 'Papier',
       organique: 'Organique',
       electronique: 'Électronique',
       autre: 'Autre'
     };
-    return categories[category] || category;
+    return categories[category as CategoryKey] || category;
   };
   
   const getStatusColor = (status: string) => {
@@ -56,7 +58,7 @@ export function WasteItem({ declaration }: WasteItemProps) {
         </View>
       </View>
       
-      {declaration.photo && (
+      {typeof declaration.photo === 'string' && declaration.photo && (
         <Image 
           source={{ uri: declaration.photo }} 
           style={styles.image} 
