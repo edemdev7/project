@@ -1,105 +1,31 @@
-import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { useEffect } from 'react';
 import { router } from 'expo-router';
 import { useUserContext } from '@/context/UserContext';
-import { getAllWasteDeclarations } from '@/services/api';
-import { WasteDeclaration } from '@/types';
-import { WasteItem } from '@/components/WasteItem';
+
+// Importer les composants pour les différents types d'utilisateurs
+import CollectorMissionHistory from '@/components/CollectorMissionHistory';
+import RecyclerAppointmentHistory from '@/components/RecyclerAppointmentHistory';
+import ParticularHistory from '@/components/ParticularHistory';
 
 export default function HistoryScreen() {
   const { user, isAuthenticated } = useUserContext();
-  const [declarations, setDeclarations] = useState<WasteDeclaration[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
+  
   useEffect(() => {
     if (!isAuthenticated) {
       router.replace('/auth/login');
       return;
     }
-    
-    fetchDeclarations();
   }, [isAuthenticated]);
 
-  const fetchDeclarations = async () => {
-    try {
-      setLoading(true);
-      const data = await getAllWasteDeclarations();
-      setDeclarations(data);
-    } catch (error) {
-      console.error('Error fetching waste declarations:', error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetchDeclarations();
-  };
-
-  if (loading && !refreshing) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#10B981" />
-      </View>
-    );
+  // Afficher l'historique en fonction du type d'utilisateur
+  if (user?.type === 'collecteur') {
+    return <CollectorMissionHistory />;
   }
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Historique des déclarations</Text>
-      
-      {declarations.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>Vous n'avez pas encore déclaré de déchets.</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={declarations}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <WasteItem declaration={item} />}
-          contentContainerStyle={styles.listContent}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#10B981']} />
-          }
-        />
-      )}
-    </View>
-  );
+  
+  if (user?.type === 'recycleur') {
+    return <RecyclerAppointmentHistory />;
+  }
+  
+  // Par défaut, afficher l'historique pour les particuliers
+  return <ParticularHistory />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    margin: 16,
-    color: '#111827',
-  },
-  listContent: {
-    padding: 16,
-    paddingTop: 0,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#6B7280',
-    textAlign: 'center',
-    lineHeight: 24,
-  },
-});
