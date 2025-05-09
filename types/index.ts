@@ -77,3 +77,51 @@ export interface WasteDeclaration extends WasteData {
   user: number;
   collector?: number;
 }
+
+export interface UserProfileUpdate {
+  username?: string
+  phone?: string
+  location?: string
+  location_gps?: {
+    latitude: number
+    longitude: number
+  }
+}
+
+export interface CollectorAvailability {
+  is_available: boolean
+}
+
+export interface CollectorMission extends WasteDeclaration {
+  user_details: {
+    name: string
+    phone: string
+    location_gps?: string
+  }
+}
+
+export interface CollectorSchedule {
+  id?: number
+  zone: string
+  day_of_week: number // 0-6 pour dimanche-samedi
+  start_time: string // format "HH:MM"
+  end_time: string // format "HH:MM"
+}
+
+export interface WasteFilters {
+  category?: string
+  date?: string
+  location?: string
+  minWeight?: number
+  maxWeight?: number
+}
+export interface PlatformMapProps {
+  region: {
+    latitude: number
+    longitude: number
+    latitudeDelta: number
+    longitudeDelta: number
+  }
+  onPress?: (event: any) => void
+  style?: any
+}

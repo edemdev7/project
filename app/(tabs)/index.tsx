@@ -21,7 +21,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <WelcomeMessage username={user.username} points={user.points} />
+      <WelcomeMessage username={user.username} points={user.points} userType={''} />
       
       <View style={styles.statusSection}>
         <Text style={styles.sectionTitle}>État de votre compte</Text>
