@@ -197,7 +197,6 @@ export const getCollectorMissions = async (filters?: { status?: string; date?: s
 export const acceptMission = async (id: number): Promise<void> => {
   await api.post(`/api/waste/${id}/accept_mission/`)
 }
-
 export const rejectMission = async (id: number): Promise<void> => {
   await api.post(`/api/waste/${id}/reject_mission/`)
 }
