@@ -110,12 +110,12 @@ export default function CollectorMissions() {
       <View style={styles.missionDetails}>
         <View style={styles.detailRow}>
           <Text style={styles.detailLabel}>Particulier:</Text>
-          <Text style={styles.detailValue}>{item.user_details.name}</Text>
+          <Text style={styles.detailValue}>{item.user_username}</Text>
         </View>
 
         <View style={styles.detailRow}>
           <Text style={styles.detailLabel}>Téléphone:</Text>
-          <Text style={styles.detailValue}>{item.user_details.phone}</Text>
+          <Text style={styles.detailValue}>{item.user_phone}</Text>
         </View>
 
         <View style={styles.detailRow}>
@@ -129,10 +129,10 @@ export default function CollectorMissions() {
         </View>
 
         {/* Ajouter l'affichage des coordonnées GPS si disponibles */}
-        {item.user_details.location_gps && (
+        {item.user_location_gps && (
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>GPS:</Text>
-            <Text style={styles.detailValue}>{item.user_details.location_gps}</Text>
+            <Text style={styles.detailValue}>{item.user_location_gps}</Text>
           </View>
         )}
       </View>

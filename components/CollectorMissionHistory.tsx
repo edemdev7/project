@@ -15,7 +15,7 @@ export default function MissionHistoryScreen() {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [filters, setFilters] = useState<MissionFiltersType>({
-    status: "collecte", // Par défaut, afficher les missions collectées
+    status: "collecté", // Par défaut, afficher les missions collectées
   })
 
   useEffect(() => {
@@ -78,12 +78,12 @@ export default function MissionHistoryScreen() {
       <View style={styles.missionDetails}>
         <View style={styles.detailRow}>
           <Text style={styles.detailLabel}>Particulier:</Text>
-          <Text style={styles.detailValue}>{item.user_details.name}</Text>
+          <Text style={styles.detailValue}>{item.user_username}</Text>
         </View>
 
         <View style={styles.detailRow}>
           <Text style={styles.detailLabel}>Téléphone:</Text>
-          <Text style={styles.detailValue}>{item.user_details.phone}</Text>
+          <Text style={styles.detailValue}>{item.user_phone|| "ras"}</Text>
         </View>
 
         <View style={styles.detailRow}>
@@ -97,10 +97,10 @@ export default function MissionHistoryScreen() {
         </View>
 
         {/* Ajouter l'affichage des coordonnées GPS si disponibles */}
-        {item.user_details.location_gps && (
+        {item.user_location_gps && (
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>GPS:</Text>
-            <Text style={styles.detailValue}>{item.user_details.location_gps}</Text>
+            <Text style={styles.detailValue}>{item.user_location_gps}</Text>
           </View>
         )}
 

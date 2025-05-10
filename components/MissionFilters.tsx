@@ -89,48 +89,48 @@ export default function MissionFilters({ onApplyFilters, activeFilters }: Missio
                 <Text style={styles.filterSectionTitle}>Statut</Text>
                 <View style={styles.statusOptions}>
                   <TouchableOpacity
-                    style={[styles.statusOption, tempFilters.status === "en_attente" && styles.statusOptionSelected]}
-                    onPress={() => handleStatusSelect("en_attente")}
+                    style={[styles.statusOption, tempFilters.status === "en attente" && styles.statusOptionSelected]}
+                    onPress={() => handleStatusSelect("en attente")}
                   >
                     <Text
                       style={[
                         styles.statusOptionText,
-                        tempFilters.status === "en_attente" && styles.statusOptionTextSelected,
+                        tempFilters.status === "en attente" && styles.statusOptionTextSelected,
                       ]}
                     >
                       En attente
                     </Text>
-                    {tempFilters.status === "en_attente" && <Check size={16} color="#FFFFFF" />}
+                    {tempFilters.status === "en attente" && <Check size={16} color="#FFFFFF" />}
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    style={[styles.statusOption, tempFilters.status === "accepte" && styles.statusOptionSelected]}
-                    onPress={() => handleStatusSelect("accepte")}
+                    style={[styles.statusOption, tempFilters.status === "accepté" && styles.statusOptionSelected]}
+                    onPress={() => handleStatusSelect("accepté")}
                   >
                     <Text
                       style={[
                         styles.statusOptionText,
-                        tempFilters.status === "accepte" && styles.statusOptionTextSelected,
+                        tempFilters.status === "accepté" && styles.statusOptionTextSelected,
                       ]}
                     >
                       Accepté
                     </Text>
-                    {tempFilters.status === "accepte" && <Check size={16} color="#FFFFFF" />}
+                    {tempFilters.status === "accepté" && <Check size={16} color="#FFFFFF" />}
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    style={[styles.statusOption, tempFilters.status === "collecte" && styles.statusOptionSelected]}
-                    onPress={() => handleStatusSelect("collecte")}
+                    style={[styles.statusOption, tempFilters.status === "collecté" && styles.statusOptionSelected]}
+                    onPress={() => handleStatusSelect("collecté")}
                   >
                     <Text
                       style={[
                         styles.statusOptionText,
-                        tempFilters.status === "collecte" && styles.statusOptionTextSelected,
+                        tempFilters.status === "collecté" && styles.statusOptionTextSelected,
                       ]}
                     >
                       Collecté
                     </Text>
-                    {tempFilters.status === "collecte" && <Check size={16} color="#FFFFFF" />}
+                    {tempFilters.status === "collecté" && <Check size={16} color="#FFFFFF" />}
                   </TouchableOpacity>
                 </View>
               </View>

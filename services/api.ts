@@ -212,12 +212,12 @@ export const markAllMissionsCollected = async (): Promise<void> => {
 
 // Endpoints pour les horaires des collecteurs
 export const getCollectorSchedules = async (): Promise<CollectorSchedule[]> => {
-  const response = await api.get<CollectorSchedule[]>("/collector-schedules/")
+  const response = await api.get<CollectorSchedule[]>("/api/collector-schedules/")
   return response.data
 }
 
 export const addCollectorSchedule = async (schedule: CollectorSchedule): Promise<CollectorSchedule> => {
-  const response = await api.post<CollectorSchedule>("/collector-schedules/", schedule)
+  const response = await api.post<CollectorSchedule>("/api/collector-schedules/", schedule)
   return response.data
 }
 
@@ -225,10 +225,10 @@ export const updateCollectorSchedule = async (schedule: CollectorSchedule): Prom
   if (!schedule.id) {
     throw new Error("Schedule ID is required for update")
   }
-  const response = await api.put<CollectorSchedule>(`/collector-schedules/${schedule.id}/`, schedule)
+  const response = await api.put<CollectorSchedule>(`/api/collector-schedules/${schedule.id}/`, schedule)
   return response.data
 }
 
 export const deleteCollectorSchedule = async (id: number): Promise<void> => {
-  await api.delete(`/collector-schedules/${id}/`)
+  await api.delete(`/api/collector-schedules/${id}/`)
 }

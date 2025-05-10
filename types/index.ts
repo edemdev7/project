@@ -75,6 +75,9 @@ export interface WasteDeclaration extends WasteData {
   status: string;
   created_at: string;
   user: number;
+  user_username: string;
+  user_phone: string,
+  user_location_gps: string,
   collector?: number;
 }
 
@@ -94,7 +97,7 @@ export interface CollectorAvailability {
 
 export interface CollectorMission extends WasteDeclaration {
   user_details: {
-    name: string
+    username: string
     phone: string
     location_gps?: string
   }
