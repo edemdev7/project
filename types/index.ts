@@ -67,9 +67,9 @@ export interface WasteData {
   category: 'plastique' | 'papier' | 'organique' | 'electronique' | 'autre';
   weight: number;
   location: string;
-  photo?: FormData;
+  photo?: FormData | Blob | { uri: string; type?: string; name?: string } | string;
+  photoUri?: string; 
 }
-
 export interface WasteDeclaration extends WasteData {
   id: number;
   status: string;

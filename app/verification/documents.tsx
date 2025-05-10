@@ -85,44 +85,59 @@ export default function DocumentUploadScreen() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   };
 
-  const handleUpload = async () => {
-    if (!cipDocument || !residenceProof) {
-      Alert.alert('Erreur', 'Veuillez fournir les deux documents requis.');
-      return;
-    }
+  // Alternative pour handleUpload si la méthode ci-dessus ne fonctionne pas
+const handleUpload = async () => {
+  if (!cipDocument || !residenceProof) {
+    Alert.alert('Erreur', 'Veuillez fournir les deux documents requis.');
+    return;
+  }
 
-    try {
-      setLoading(true);
-      
-      const formData = new FormData();
-      formData.append('cip_document', {
-        name: 'cip_document.jpg',
-        type: 'image/jpeg',
-        uri: Platform.OS === 'ios' ? cipDocument.replace('file://', '') : cipDocument,
-      } as any);
-      
-      formData.append('residence_proof', {
-        name: 'residence_proof.jpg',
-        type: 'image/jpeg',
-        uri: Platform.OS === 'ios' ? residenceProof.replace('file://', '') : residenceProof,
-      } as any);
-
-      await uploadDocuments(formData);
-      await refreshUserProfile();
-      
-      Alert.alert(
-        'Succès', 
-        'Vos documents ont été soumis avec succès et sont en cours de vérification.',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
-      );
-    } catch (error) {
+  try {
+    setLoading(true);
+    
+    // Créer un nouveau FormData
+    const formData = new FormData();
+    
+    // Traitement pour les fichiers sur Android et iOS
+    const cipFile = {
+      uri: cipDocument,
+      name: 'cip_document.jpg',
+      type: 'image/jpeg',
+    };
+    
+    const residenceFile = {
+      uri: residenceProof,
+      name: 'residence_proof.jpg',
+      type: 'image/jpeg',
+    };
+    
+    // Ajouter les fichiers directement
+    formData.append('cip_document', cipFile as any);
+    formData.append('residence_proof', residenceFile as any);
+    
+    // Log pour débugger
+    console.log('Envoi des documents...');
+    
+    await uploadDocuments(formData);
+    await refreshUserProfile();
+    
+    Alert.alert(
+      'Succès', 
+      'Vos documents ont été soumis avec succès et sont en cours de vérification.',
+      [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
+    );
+  } catch (error) {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      // @ts-ignore
+      console.error('Error uploading documents:', (error as any).response?.data || error);
+    } else {
       console.error('Error uploading documents:', error);
-      Alert.alert('Erreur', 'Impossible de soumettre vos documents. Veuillez réessayer.');
-    } finally {
-      setLoading(false);
     }
-  };
-
+    Alert.alert('Erreur', 'Impossible de soumettre vos documents. Veuillez réessayer.');
+  } finally {
+    setLoading(false);
+  }
+};
   // If already uploaded, show success message
   if (user?.documents_uploaded) {
     return (

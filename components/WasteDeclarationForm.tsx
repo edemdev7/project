@@ -56,18 +56,11 @@ export default function WasteDeclarationForm() {
         const photo = await cameraRef.takePictureAsync()
         setPhotoUri(photo.uri)
         setIsCameraActive(false)
-
-        // Create FormData for photo
-        const formData = new FormData()
-        formData.append("photo", {
-          name: "waste_photo.jpg",
-          type: "image/jpeg",
-          uri: Platform.OS === "ios" ? photo.uri.replace("file://", "") : photo.uri,
-        } as any)
-
+  
+        // Stockez juste l'URI de la photo, pas le FormData
         setWasteData((prev) => ({
           ...prev,
-          photo: formData,
+          photoUri: photo.uri, // Ajoutez cette propriété à votre état pour stocker l'URI
         }))
       } catch (error) {
         console.error("Error taking picture:", error)
