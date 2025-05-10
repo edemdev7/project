@@ -124,7 +124,7 @@ export const submitProfessionalVerification = async (formData: FormData): Promis
   })
 }
 
-// Waste declarations
+// Waste api
 export const submitWasteDeclaration = async (data: WasteData): Promise<WasteDeclaration> => {
   const formData = new FormData()
 
@@ -142,7 +142,7 @@ export const submitWasteDeclaration = async (data: WasteData): Promise<WasteDecl
     }
   }
 
-  const response = await api.post<WasteDeclaration>("/declarations/waste/", formData, {
+  const response = await api.post<WasteDeclaration>("/api/waste/", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -151,13 +151,13 @@ export const submitWasteDeclaration = async (data: WasteData): Promise<WasteDecl
   return response.data
 }
 
-export const getAllWasteDeclarations = async (): Promise<WasteDeclaration[]> => {
-  const response = await api.get<WasteDeclaration[]>("/waste/")
+export const getAllWasteapi = async (): Promise<WasteDeclaration[]> => {
+  const response = await api.get<WasteDeclaration[]>("/api/waste/")
   return response.data
 }
 
 export const getWasteDeclaration = async (id: number): Promise<WasteDeclaration> => {
-  const response = await api.get<WasteDeclaration>(`/declarations/waste/${id}/`)
+  const response = await api.get<WasteDeclaration>(`/api/waste/${id}/`)
   return response.data
 }
 
@@ -171,7 +171,7 @@ export const getAvailableWaste = async (filters?: WasteFilters): Promise<WasteDe
   if (filters?.minWeight !== undefined) params.append("min_weight", filters.minWeight.toString())
   if (filters?.maxWeight !== undefined) params.append("max_weight", filters.maxWeight.toString())
 
-  const url = `/declarations/waste/available/?${params.toString()}`
+  const url = `/api/waste/available/?${params.toString()}`
   const response = await api.get<WasteDeclaration[]>(url)
   return response.data
 }
@@ -189,25 +189,25 @@ export const getCollectorMissions = async (filters?: { status?: string; date?: s
   if (filters?.date) params.append("date", filters.date)
   if (filters?.zone) params.append("zone", filters.zone)
 
-  const url = `/declarations/waste/my_missions/?${params.toString()}`
+  const url = `/api/waste/my_missions/?${params.toString()}`
   const response = await api.get<CollectorMission[]>(url)
   return response.data
 }
 
 export const acceptMission = async (id: number): Promise<void> => {
-  await api.post(`/declarations/waste/${id}/accept_mission/`)
+  await api.post(`/api/waste/${id}/accept_mission/`)
 }
 
 export const rejectMission = async (id: number): Promise<void> => {
-  await api.post(`/declarations/waste/${id}/reject_mission/`)
+  await api.post(`/api/waste/${id}/reject_mission/`)
 }
 
 export const markMissionCollected = async (id: number): Promise<void> => {
-  await api.post(`/declarations/waste/${id}/mark_collected/`)
+  await api.post(`/api/waste/${id}/mark_collected/`)
 }
 
 export const markAllMissionsCollected = async (): Promise<void> => {
-  await api.post("/declarations/waste/mark_all_collected/")
+  await api.post("/api/waste/mark_all_collected/")
 }
 
 // Endpoints pour les horaires des collecteurs

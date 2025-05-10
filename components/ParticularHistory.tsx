@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from "react-native"
 import { router } from "expo-router"
 import { useUserContext } from "@/context/UserContext"
-import { getAllWasteDeclarations } from "@/services/api"
+import { getAllWasteapi } from "@/services/api"
 import { showAlert } from "@/utils/alerts"
 import type { WasteDeclaration } from "@/types"
 import { WasteItem } from "@/components/WasteItem"
@@ -35,7 +35,7 @@ export default function ParticularHistory() {
   const fetchDeclarations = async () => {
     try {
       setLoading(true)
-      const data = await getAllWasteDeclarations()
+      const data = await getAllWasteapi()
       setDeclarations(data)
     } catch (error) {
       console.error("Error fetching waste declarations:", error)

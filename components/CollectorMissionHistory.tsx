@@ -107,7 +107,7 @@ export default function MissionHistoryScreen() {
         {item.status === "collecte" && (
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Collecté le:</Text>
-            <Text style={styles.detailValue}>{formatDate(item.completed_at || item.created_at)}</Text>
+            <Text style={styles.detailValue}>{formatDate(item.created_at)}</Text>
           </View>
         )}
       </View>
